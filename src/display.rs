@@ -14,20 +14,19 @@ use esp_idf_svc::hal::i2c::*;
 use esp_idf_svc::hal::prelude::*;
 
 use esp_idf_svc::hal::gpio::AnyIOPin;
-use esp_idf_svc::hal::gpio::{Gpio21, Gpio22};
 use esp_idf_svc::hal::i2c::I2C0;
 
 const SSD1306_ADDR: u8 = 0x3c;
 
 pub struct Display<'a> {
-    pub ddriver: GraphicsMode<I2cInterface<I2cDriver<'a>>>,
+    ddriver: GraphicsMode<I2cInterface<I2cDriver<'a>>>,
     text_style: MonoTextStyle<'a, BinaryColor>,
 }
 
-impl<'a> Display<'a> {
+impl Display<'_> {
     pub fn new(i2cp: I2C0, sda: AnyIOPin, scl: AnyIOPin) -> Result<Self> {
         let config = I2cConfig::new().baudrate(400.kHz().into());
-        let mut i2c = I2cDriver::new(i2cp, sda, scl, &config)?;
+        let i2c = I2cDriver::new(i2cp, sda, scl, &config)?;
 
         Ok(Self {
             ddriver: Builder::new()
@@ -41,6 +40,10 @@ impl<'a> Display<'a> {
                 .text_color(BinaryColor::On)
                 .build(),
         })
+    }
+
+    pub fn init_display(&mut self) {
+        self.ddriver.init().unwrap();
     }
 
     pub fn draw_meianatal(&mut self) {
