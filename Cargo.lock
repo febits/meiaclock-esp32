@@ -1018,6 +1018,7 @@ dependencies = [
  "embedded-svc",
  "embuild 0.32.0",
  "esp-idf-svc",
+ "esp-idf-sys",
  "log",
  "miniserde",
  "ssd1306-i2c",

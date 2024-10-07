@@ -36,6 +36,7 @@ tinybmp = "0.6.0"
 miniserde = "0.1.40"
 anyhow = "1.0.89"
 embedded-svc = "0.28.0"
+esp-idf-sys = "0.35.0"
 
 [build-dependencies]
 embuild = "0.32.0"
