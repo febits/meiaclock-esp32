@@ -60,8 +60,6 @@ impl SubathonAPI {
         let bytes_read = response.read(&mut self.buf)?;
         let response_body = std::str::from_utf8(&self.buf[0..bytes_read])?;
 
-        log::info!("Response JSON from API: {response_body}");
-
         let rjson: ResponseJSON = json::from_str(response_body)?;
         let timer = SubathonTimer::from(rjson.timeLeft);
 
