@@ -17,7 +17,7 @@ fn main() -> Result<()> {
     let peripherals = Peripherals::take()?;
 
     let wifi = start_wifi(env!("SSID"), env!("PASSWORD"), peripherals.modem)?;
-    log::debug!("{:?}", wifi.wifi().sta_netif().get_ip_info()?);
+    log::info!("{:?}", wifi.wifi().sta_netif().get_ip_info()?);
 
     let mut api = SubathonAPI::new(env!("API_URL"))?;
     let mut display = Display::new(
@@ -26,7 +26,7 @@ fn main() -> Result<()> {
         unsafe { AnyIOPin::new(env!("SCL_PIN").parse::<i32>()?) },
     )?;
 
-    display.ddriver.init();
+    display.init_display();
     display.draw_meianatal();
 
     thread::sleep(Duration::from_secs(2));
@@ -35,8 +35,8 @@ fn main() -> Result<()> {
         let start = Instant::now();
         let timer = match api.get_time_left() {
             Ok(t) => t,
-            Err(_) => {
-                log::error!("Failed to get timeLeft from API. Restarting the system...");
+            Err(e) => {
+                log::error!("Failed to get timeLeft from API: {e}. Restarting the system...");
                 unsafe {
                     esp_idf_svc::sys::esp_restart();
                 }
@@ -57,6 +57,4 @@ fn main() -> Result<()> {
             thread::sleep(Duration::from_millis(1000) - elapsed);
         }
     }
-
-    Ok(())
 }
