@@ -1,7 +1,6 @@
 use anyhow::Result;
 
 use embedded_svc::wifi::{AuthMethod, ClientConfiguration, Configuration};
-use esp_idf_svc::hal::prelude::Peripherals;
 use esp_idf_svc::wifi::{BlockingWifi, EspWifi};
 use esp_idf_svc::{eventloop::EspSystemEventLoop, nvs::EspDefaultNvsPartition};
 
@@ -29,7 +28,7 @@ pub fn start_wifi<'a>(
     wifi.connect()?;
     wifi.wait_netif_up()?;
 
-    log::debug!("Wifi started and netif up");
+    log::info!("Wifi started and netif up");
 
     Ok(wifi)
 }
