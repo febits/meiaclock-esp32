@@ -5,15 +5,15 @@ use esp_idf_svc::hal::prelude::Peripherals;
 use esp_idf_svc::wifi::{BlockingWifi, EspWifi};
 use esp_idf_svc::{eventloop::EspSystemEventLoop, nvs::EspDefaultNvsPartition};
 
-pub fn start_wifi<'a>(ssid: &'a str, password: &'a str) -> Result<BlockingWifi<EspWifi<'a>>> {
-    let peripherals = Peripherals::take()?;
+pub fn start_wifi<'a>(
+    ssid: &'a str,
+    password: &'a str,
+    modem: esp_idf_svc::hal::modem::Modem,
+) -> Result<BlockingWifi<EspWifi<'a>>> {
     let sys_loop = EspSystemEventLoop::take()?;
     let nvs = EspDefaultNvsPartition::take()?;
 
-    let mut wifi = BlockingWifi::wrap(
-        EspWifi::new(peripherals.modem, sys_loop.clone(), Some(nvs))?,
-        sys_loop,
-    )?;
+    let mut wifi = BlockingWifi::wrap(EspWifi::new(modem, sys_loop.clone(), Some(nvs))?, sys_loop)?;
 
     let config: Configuration = Configuration::Client(ClientConfiguration {
         ssid: ssid.try_into().unwrap(),
@@ -29,7 +29,7 @@ pub fn start_wifi<'a>(ssid: &'a str, password: &'a str) -> Result<BlockingWifi<E
     wifi.connect()?;
     wifi.wait_netif_up()?;
 
-    log::info!("Wifi started and netif up");
+    log::debug!("Wifi started and netif up");
 
     Ok(wifi)
 }
