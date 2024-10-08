@@ -10,21 +10,36 @@ use std::time::{Duration, Instant};
 use esp_idf_svc::hal::gpio::AnyIOPin;
 use esp_idf_svc::hal::peripherals::Peripherals;
 
+fn restart_system(msg: String) -> ! {
+    log::error!("{}", format!("{msg}. Restarting the system..."));
+    unsafe {
+        esp_idf_svc::sys::esp_restart();
+    }
+}
+
 fn main() -> Result<()> {
     esp_idf_svc::sys::link_patches();
     esp_idf_svc::log::EspLogger::initialize_default();
 
     let peripherals = Peripherals::take()?;
 
-    let wifi = start_wifi(env!("SSID"), env!("PASSWORD"), peripherals.modem)?;
-    log::info!("{:?}", wifi.wifi().sta_netif().get_ip_info()?);
+    let wifi = start_wifi(env!("SSID"), env!("PASSWORD"), peripherals.modem).unwrap_or_else(|e| {
+        restart_system(format!("Failed to start wifi: {e}"));
+    });
 
-    let mut api = SubathonAPI::new(env!("API_URL"))?;
+    log::info!("{:?}", wifi.wifi().sta_netif().get_ip_info().unwrap());
+
+    let mut api = SubathonAPI::new(env!("API_URL")).unwrap_or_else(|e| {
+        restart_system(format!("Failed to start https client: {e}"));
+    });
     let mut display = Display::new(
         peripherals.i2c0,
         unsafe { AnyIOPin::new(env!("SDA_PIN").parse::<i32>()?) },
         unsafe { AnyIOPin::new(env!("SCL_PIN").parse::<i32>()?) },
-    )?;
+    )
+    .unwrap_or_else(|e| {
+        restart_system(format!("Failed to start ssd1306 display driver: {e}"));
+    });
 
     display.init_display();
     display.draw_meianatal();
@@ -33,16 +48,10 @@ fn main() -> Result<()> {
 
     loop {
         let start = Instant::now();
-        let timer = match api.get_time_left() {
-            Ok(t) => t,
-            Err(e) => {
-                log::error!("Failed to get timeLeft from API: {e}. Restarting the system...");
-                unsafe {
-                    esp_idf_svc::sys::esp_restart();
-                }
-            }
-        };
 
+        let timer = api.get_time_left().unwrap_or_else(|e| {
+            restart_system(format!("Failed to get timeLeft from API: {e}"));
+        });
         display.draw_timer(
             format!(
                 "{:02}:{:02}:{:02}",
