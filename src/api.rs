@@ -2,7 +2,7 @@ use anyhow::Result;
 use miniserde::{json, Deserialize};
 
 use embedded_svc::http::client::Client as HttpClient;
-use esp_idf_svc::http::client::{Configuration as HttpConfiguration, EspHttpConnection};
+use esp_idf_svc::http::client::{Configuration as HttpConfiguration, EspHttpConnection, Method};
 
 const BUFFSIZE: usize = 1024;
 
@@ -54,9 +54,15 @@ impl SubathonAPI {
     }
 
     pub fn get_time_left(&mut self) -> Result<SubathonTimer> {
-        let request = self.client.get(self.api_url)?;
+        let mut response = self
+            .client
+            .request(
+                Method::Get,
+                self.api_url,
+                &[("User-Agent", "meiaclock-esp/0.1")],
+            )?
+            .submit()?;
 
-        let mut response = request.submit()?;
         let bytes_read = response.read(&mut self.buf)?;
         let response_body = std::str::from_utf8(&self.buf[0..bytes_read])?;
 
