@@ -53,3 +53,6 @@ espflash flash --monitor target/xtensa-esp32-espidf/release/meiaclock-esp32
 - Se as variáveis de ambiente estiverem corretas (junto com as condições ideais de temperatura e pressão) e as conexões com os pinos estiverem corretas, o timer do menininho deve aparecer na sua tela.
 
 - Lembrando que qualquer erro tratável será enviado para o monitor serial, cujo é ativado logo após o `flash` ser realizado na placa.
+
+> [!NOTE]
+> O timer do display atualiza em uma janela de 20 segundos para não sobrecarregar o servidor da API com muitos requests por minuto. A taxa de requests agora é 3 por minuto, ao invés de 60. Também há o fato de que o timer da própria subathon não atualiza com tanta frequência, então não há necessidade de fazer tantos requests.
