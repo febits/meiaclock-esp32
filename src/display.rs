@@ -10,11 +10,12 @@ use embedded_graphics::{
 use ssd1306_i2c::{prelude::*, Builder};
 use tinybmp::Bmp;
 
+use esp_idf_svc::hal::gpio::AnyIOPin;
+use esp_idf_svc::hal::i2c::I2C0;
 use esp_idf_svc::hal::i2c::*;
 use esp_idf_svc::hal::prelude::*;
 
-use esp_idf_svc::hal::gpio::AnyIOPin;
-use esp_idf_svc::hal::i2c::I2C0;
+use crate::api::SubathonTimer;
 
 const SSD1306_ADDR: u8 = 0x3c;
 
@@ -59,12 +60,16 @@ impl Display<'_> {
         self.ddriver.flush().unwrap();
     }
 
-    pub fn draw_timer(&mut self, timer_str: &str) {
+    pub fn draw_timer(&mut self, timer: &SubathonTimer) {
         self.ddriver.flush().unwrap();
         self.ddriver.clear();
 
         Text::with_baseline(
-            timer_str,
+            format!(
+                "{:02}:{:02}:{:02}",
+                timer.hours, timer.minutes, timer.seconds
+            )
+            .as_str(),
             Point::new(12, 10),
             self.text_style,
             Baseline::Top,
