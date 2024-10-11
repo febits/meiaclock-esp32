@@ -38,6 +38,12 @@ impl From<u64> for SubathonTimer {
     }
 }
 
+impl From<SubathonTimer> for u64 {
+    fn from(value: SubathonTimer) -> Self {
+        (value.hours * (3600 * 1000)) + (value.minutes * (60 * 1000)) + (value.seconds * 1000)
+    }
+}
+
 impl SubathonAPI {
     pub fn new(api_url: &'static str) -> Result<Self> {
         let config = &HttpConfiguration {
