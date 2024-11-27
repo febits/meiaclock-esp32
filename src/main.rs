@@ -48,26 +48,18 @@ fn main() -> Result<()> {
 
     thread::sleep(Duration::from_secs(2));
 
-    let mut window = Duration::from_millis(0);
+    let mut window = Duration::from_millis(20000);
     let mut elapsed = Duration::from_millis(0);
     let mut timer = SubathonTimer::from(0);
 
-    let mut starting_now = true;
-
     loop {
-        if window >= WINDOW_MAX || starting_now {
+        if window >= WINDOW_MAX {
             let start = Instant::now();
             timer = api.get_time_left().unwrap_or_else(|e| {
                 restart_system(format!("Failed to get timeLeft from API: {e}"));
             });
+
             window = Duration::from_millis(0);
-
-            log::info!("Timer updated: {:?}", start.elapsed());
-
-            if starting_now {
-                starting_now = false;
-            }
-
             elapsed += start.elapsed();
         } else {
             let start = Instant::now();
