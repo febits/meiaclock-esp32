@@ -77,7 +77,7 @@ impl Display<'_> {
         .draw(&mut self.ddriver)
         .unwrap();
 
-        Text::with_baseline(":>", Point::new(50, 40), self.text_style, Baseline::Top)
+        Text::with_baseline("=m", Point::new(50, 40), self.text_style, Baseline::Top)
             .draw(&mut self.ddriver)
             .unwrap();
 
