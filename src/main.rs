@@ -10,7 +10,7 @@ use std::time::{Duration, Instant};
 use esp_idf_svc::hal::gpio::AnyIOPin;
 use esp_idf_svc::hal::peripherals::Peripherals;
 
-const WINDOW_MAX: Duration = Duration::from_millis(20000);
+const WINDOW_MAX: Duration = Duration::from_millis(5000);
 
 fn restart_system(msg: String) -> ! {
     log::error!("{msg}. Restarting the system...");
