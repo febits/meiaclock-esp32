@@ -20,7 +20,7 @@
 ## Tutorial
 
 > [!IMPORTANT]
-> Para o projeto compilar corretamente, faz-se necessário a configuração de algumas variáveis de ambiente específicas descritas abaixo
+> Para o projeto compilar corretamente, faz-se necessário a configuração de algumas variáveis de ambiente específicas descritas abaixo. Também recomendo que faça o processo no Linux para evitar dor de cabeça.
 
 - No linux, você pode definir assim:
 ```bash
