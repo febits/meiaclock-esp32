@@ -48,7 +48,7 @@ fn main() -> Result<()> {
 
     thread::sleep(Duration::from_secs(2));
 
-    let mut window = Duration::from_millis(20000);
+    let mut window = Duration::from_millis(5000);
     let mut elapsed = Duration::from_millis(0);
     let mut timer = SubathonTimer::from(0);
 
