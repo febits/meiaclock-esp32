@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> A Subathon do Meiaum acabou em Maio de 2025. Infelizmente, este projeto não possui mais nenhum sentido, visto que não há o que acompanhar. No caso da API da Subathon (desenvolvida por [**davi**](https://github.com/daviirodrig)) ainda funcionar, você ainda pode "utilizar" este projeto, mas não haverá sentido, pois o timer estará zerado.
+
 # Meiaclock ESP32
 
 É um protótipo de projeto chamado "meiaclock" para acompanhar o timer da subathon do [Meiaum](https://www.twitch.tv/omeiaum) em formato de "relógio digital".
