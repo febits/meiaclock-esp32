@@ -16,9 +16,9 @@
 
 ## Software necessário
 
-- É utilizado o projeto [esp-rs](https://github.com/esp-rs) cujo é uma série de repositórios em Rust relacionados ao ESP32. Principalmente aos bindings do [esp-idf](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/index.html), que é o framework oficial em C.
+- É utilizado o projeto [esp-rs](https://github.com/esp-rs), uma série de repositórios em Rust relacionados ao ESP32. Principalmente aos bindings do [esp-idf](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/index.html), que é o framework oficial em C e C++.
 
-- Instale todas as dependências descritas [aqui](https://github.com/esp-rs/esp-idf-template?tab=readme-ov-file#prerequisites)
+- Instale todas as dependências descritas [aqui](https://github.com/esp-rs/esp-idf-template?tab=readme-ov-file#prerequisites).
 
 ## Tutorial
 
